@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RailwaysMCQ · रेलवे MCQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f4ff;--bg2:#e4edff;--surface:#fff;
+  --border:#c5d8f8;--bdrDk:#93baf8;
+  --primary:#1d6fce;--primaryDk:#1045a0;--primaryLt:#deeeff;
+  --accent:#f59e0b;--accentLt:#fef3c7;
+  --text:#0f2040;--textMid:#3b5a8a;--textLt:#7090bb;
+  --ok:#16a34a;--okBg:#f0fdf4;--okBdr:#86efac;
+  --err:#dc2626;--errBg:#fef2f2;--errBdr:#fca5a5;
+  --sh:0 2px 12px rgba(29,111,206,.10);--shMd:0 6px 28px rgba(29,111,206,.16);
+}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+input,select,button{font-family:inherit}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(.85);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fadeUp{animation:fadeUp .3s ease both}
+.screen{display:none}.screen.active{display:block}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:linear-gradient(135deg,#1d6fce,#1e3fa8);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;transition:opacity .4s}
+#loader.hide{opacity:0;pointer-events:none}
+#loader.gone{display:none!important}
+.loader-logo{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:6px;color:#fff;text-align:center;line-height:1}
+.loader-sub{font-size:13px;color:rgba(255,255,255,.7);letter-spacing:3px;text-align:center}
+.bgspin{width:44px;height:44px;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-top:8px}
+#loader-txt{font-size:13px;font-weight:600;color:rgba(255,255,255,.8);letter-spacing:.5px}
+
+/* LANG TOGGLE */
+#lang-btn{position:fixed;top:8px;right:12px;z-index:600;background:rgba(255,255,255,.92);border:1.5px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;color:var(--primary);backdrop-filter:blur(8px);box-shadow:var(--sh);transition:all .15s}
+#lang-btn:hover{background:var(--primaryLt)}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+#nav-banner{text-align:center;font-size:11px;font-weight:700;padding:5px;letter-spacing:.4px;display:none}
+#nav-banner.warn{background:var(--accentLt);color:#92400e}
+#nav-banner.danger{background:#fee2e2;color:#991b1b}
+#nav-inner{display:flex;align-items:center;padding:0 12px;height:52px;gap:4px}
+#nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--primary);margin-right:9px;flex-shrink:0;cursor:pointer}
+#nav-logo span{color:var(--accent)}
+#nav-tabs{display:flex;flex:1;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#nav-tabs::-webkit-scrollbar{display:none}
+.nt{padding:6px 10px;border:none;border-radius:7px;background:transparent;color:var(--textLt);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0;transition:all .15s;white-space:nowrap}
+.nt.active{background:var(--primaryLt);color:var(--primary)}
+.nt:hover:not(.active){background:var(--bg2)}
+#nav-av{width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;cursor:pointer;border:none;flex-shrink:0}
+#main{max-width:700px;margin:0 auto;padding:68px 12px 80px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--sh);transition:all .2s}
+.card.tap:hover{box-shadow:var(--shMd);border-color:var(--bdrDk);transform:translateY(-2px);cursor:pointer}
+.card.blue{background:var(--primaryLt);border-color:var(--bdrDk)}
+.card.green{background:var(--okBg);border-color:var(--okBdr)}
+.card.amber{background:var(--accentLt);border-color:#fcd34d}
+
+/* BUTTONS */
+.btn{padding:11px 18px;border:none;border-radius:9px;font-weight:700;font-size:13.5px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--primary);color:#fff;box-shadow:0 3px 12px rgba(29,111,206,.28)}
+.btn.primary:hover{background:var(--primaryDk);transform:translateY(-1px)}
+.btn.outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.btn.outline:hover{background:var(--primaryLt)}
+.btn.ghost{background:transparent;color:var(--textMid);border:1.5px solid var(--border)}
+.btn.ghost:hover{background:var(--bg2)}
+.btn.amber-btn{background:var(--accent);color:#fff}
+.btn.red{background:#dc2626;color:#fff}
+.btn.full{width:100%}
+.btn.sm{padding:7px 13px;font-size:12px;border-radius:7px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn.guest-big{background:linear-gradient(135deg,#059669,#16a34a);color:#fff;font-size:15px;padding:14px;box-shadow:0 4px 16px rgba(22,163,74,.3)}
+.btn.guest-big:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(22,163,74,.4)}
+
+/* INPUTS */
+.inp{width:100%;background:var(--surface);border:2px solid var(--border);border-radius:9px;padding:11px 13px;color:var(--text);font-size:14px;outline:none;transition:border-color .15s}
+.inp:focus{border-color:var(--primary)}
+.inp::placeholder{color:var(--textLt)}
+select.inp{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%236b8db5' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.lbl{font-size:10.5px;font-weight:700;letter-spacing:1.3px;color:var(--textLt);margin-bottom:6px;text-transform:uppercase}
+
+/* BADGE */
+.badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;letter-spacing:.6px;display:inline-block}
+.badge.pyq{background:var(--primary);color:#fff}
+.badge.live{background:#ef4444;color:#fff}
+.badge.pro{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff}
+.badge.trial{background:var(--accent);color:#fff}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.divider{display:flex;align-items:center;gap:9px;margin:12px 0;color:var(--textLt);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.spin{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+.mono{font-family:'JetBrains Mono',monospace}
+.dsp{font-family:'Bebas Neue',sans-serif}
+
+/* AUTH */
+.auth-hero{background:linear-gradient(135deg,#1d6fce,#1e3fa8);padding:42px 20px 60px;text-align:center;position:relative;overflow:hidden}
+.auth-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:40px 40px;opacity:.06}
+.auth-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--shMd);margin-top:-32px;position:relative;z-index:2}
+.otp-row{display:flex;gap:8px;justify-content:center;margin:12px 0}
+.otp-box{width:44px;height:52px;border:2px solid var(--border);border-radius:9px;text-align:center;font-size:21px;font-weight:800;color:var(--primary);background:var(--surface);outline:none;transition:border-color .15s;-webkit-appearance:none;caret-color:var(--primary)}
+.otp-box:focus{border-color:var(--primary);background:var(--primaryLt)}
+
+/* GUEST BANNER */
+.guest-banner{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:13px;padding:16px;margin-bottom:14px;text-align:center}
+
+/* QUIZ */
+.opt{background:var(--surface);border:2px solid var(--border);border-radius:11px;padding:12px 13px;color:var(--text);text-align:left;cursor:pointer;display:flex;align-items:flex-start;gap:10px;transition:all .15s;width:100%}
+.opt:hover:not(:disabled){border-color:var(--bdrDk);background:var(--primaryLt)}
+.opt.sel{border-color:var(--primary);background:var(--primaryLt)}
+.opt.correct{border-color:var(--ok);background:var(--okBg);color:var(--ok)}
+.opt.wrong{border-color:var(--err);background:var(--errBg);color:var(--err)}
+.opt.dim{opacity:.4}
+.opt:disabled{cursor:default}
+.opt-circle{width:26px;height:26px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.prog-bar{background:var(--bg2);border-radius:4px;height:5px;margin-bottom:15px;overflow:hidden}
+.prog-fill{height:5px;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:4px;transition:width .4s ease}
+.exp-box{border-radius:11px;padding:14px;margin-bottom:11px}
+.exp-box.ok{border:1.5px solid var(--okBdr);background:var(--okBg)}
+.exp-box.bad{border:1.5px solid var(--errBdr);background:var(--errBg)}
+.acc-bg{background:var(--bg2);border-radius:4px;height:6px;margin-top:5px;overflow:hidden}
+.acc-fill{height:6px;border-radius:4px;transition:width .8s ease}
+
+/* AI */
+#ai-panel{position:fixed;bottom:72px;right:12px;width:330px;max-height:480px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shMd);z-index:600;display:none;flex-direction:column;overflow:hidden}
+#ai-panel.open{display:flex;animation:slideUp .22s ease}
+#ai-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;max-height:320px}
+.ai-msg{padding:9px 11px;border-radius:9px;font-size:13px;line-height:1.55;max-width:90%}
+.ai-msg.bot{background:var(--primaryLt);color:var(--text);align-self:flex-start}
+.ai-msg.user{background:var(--primary);color:#fff;align-self:flex-end}
+#ai-fab{position:fixed;bottom:13px;right:12px;width:50px;height:50px;border-radius:50%;background:var(--primary);color:#fff;border:none;cursor:pointer;font-size:21px;box-shadow:0 4px 18px rgba(29,111,206,.4);z-index:600;display:none;align-items:center;justify-content:center;transition:transform .2s}
+#ai-fab.show{display:flex}
+#ai-fab:hover{transform:scale(1.1)}
+
+/* MERIT */
+.mrow{display:grid;grid-template-columns:40px 1fr 62px 54px 66px;gap:4px;align-items:center;padding:9px 12px;border-top:1px solid var(--border)}
+
+/* SUB WALL */
+#sub-wall{display:none;position:fixed;inset:0;background:rgba(10,20,50,.72);backdrop-filter:blur(6px);z-index:800;align-items:center;justify-content:center;padding:16px}
+#sub-wall.show{display:flex}
+.plan-card{border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+.plan-card:hover,.plan-card.sel{border-color:var(--primary);background:var(--primaryLt)}
+
+/* TOAST */
+#toast{position:fixed;top:64px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:8px 16px;border-radius:9px;font-size:13px;font-weight:600;z-index:9999;display:none;white-space:nowrap;max-width:90vw;text-align:center;animation:pop .2s ease}
+
+/* CHAPTER ITEM */
+.ch-item{background:var(--surface);border:1.5px solid var(--border);border-radius:11px;padding:13px 14px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px}
+.ch-item:hover{border-color:var(--bdrDk);background:var(--primaryLt);transform:translateX(3px)}
+.ch-num{width:30px;height:30px;border-radius:8px;background:var(--primaryLt);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--primary);flex-shrink:0}
+
+/* TAB PILLS */
+.tpills{display:flex;gap:5px;background:var(--bg2);border-radius:9px;padding:4px;margin-bottom:15px}
+.tpill{flex:1;padding:7px 5px;border:none;border-radius:6px;background:transparent;color:var(--textMid);font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s;text-align:center}
+.tpill.active{background:var(--surface);color:var(--primary);box-shadow:var(--sh)}
+
+/* STAT */
+.stat-pill{background:var(--primaryLt);border-radius:11px;padding:13px 8px;text-align:center}
+.stat-v{font-size:22px;font-weight:800;color:var(--primary)}
+.stat-l{font-size:10px;color:var(--textLt);margin-top:3px;font-weight:600}
+
+/* CONFETTI */
+.conf{position:fixed;top:-10px;z-index:9999;border-radius:2px;animation:fall linear forwards;pointer-events:none}
+
+/* Firebase loading notice */
+#fb-notice{background:var(--accentLt);border:1px solid #fcd34d;border-radius:9px;padding:10px 13px;font-size:12px;color:#854d0e;text-align:center;margin-bottom:10px;display:none}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">RAILWAYS<br><span style="font-size:28px;letter-spacing:8px;opacity:.8">MCQ</span></div>
+  <div class="loader-sub">रेलवे परीक्षा पोर्टल</div>
+  <div class="bgspin"></div>
+  <div id="loader-txt">Loading... / लोड हो रहा है...</div>
+</div>
+
+<!-- LANGUAGE TOGGLE -->
+<button id="lang-btn" onclick="toggleLang()">EN / हिं</button>
+
+<div id="toast"></div>
+<div id="recaptcha-container" style="position:fixed;bottom:0;z-index:9999"></div>
+
+<!-- SUB WALL -->
+<div id="sub-wall">
+  <div class="auth-card" style="max-width:440px;margin-top:0;animation:pop .3s ease">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:40px;margin-bottom:7px">🔐</div>
+      <div class="dsp" style="font-size:22px;color:var(--primary)" data-hi="प्लान अपग्रेड करें">UPGRADE YOUR PLAN</div>
+      <div style="font-size:13px;color:var(--textMid);margin-top:4px" data-hi="ट्रायल खत्म — सब्सक्राइब करें">Trial ended — subscribe to continue</div>
+    </div>
+    <div class="g2" style="margin-bottom:14px">
+      <div class="plan-card" onclick="selPlan(this,'monthly')">
+        <div style="font-size:24px">📅</div>
+        <div style="font-weight:800;font-size:16px;color:var(--primary);margin-top:4px">₹99/माह</div>
+        <div style="font-size:11px;color:var(--textLt);margin-top:3px" data-hi="मासिक एक्सेस">Monthly Access</div>
+      </div>
+      <div class="plan-card" onclick="selPlan(this,'yearly')">
+        <div style="font-size:24px">⭐</div>
+        <div style="font-weight:800;font-size:16px;color:var(--accent);margin-top:4px">₹599/वर्ष</div>
+        <div style="font-size:11px;color:var(--textLt);margin-top:3px" data-hi="वार्षिक — 50% बचत">Yearly — Save 50%</div>
+      </div>
+    </div>
+    <button class="btn primary full" onclick="contactAdmin()">💬 <span data-hi="एडमिन से संपर्क करें">Contact Admin</span></button>
+    <div style="font-size:11px;color:var(--textLt);text-align:center;margin-top:8px">📞 8247012698 · 7671012698</div>
+    <button onclick="document.getElementById('sub-wall').classList.remove('show')" style="width:100%;margin-top:8px;background:none;border:none;color:var(--textLt);font-size:12px;cursor:pointer" data-hi="बंद करें">Dismiss</button>
+  </div>
+</div>
+
+<!-- AI PANEL -->
+<div id="ai-panel">
+  <div style="padding:11px 13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--primaryLt)">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:15px">🤖</div>
+      <div><div style="font-weight:800;font-size:13px">RailBot AI</div><div style="font-size:10px;color:var(--textLt)" data-hi="रेलवे परीक्षा सहायक">Railways Exam Assistant</div></div>
+    </div>
+    <button onclick="toggleAI()" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--textLt)">✕</button>
+  </div>
+  <div id="ai-msgs"></div>
+  <div style="padding:8px;border-top:1px solid var(--border);display:flex;gap:6px;background:var(--surface)">
+    <input id="ai-inp" class="inp" placeholder="GFR, G&SR, Leave rules पूछें..." style="font-size:13px;padding:8px 10px" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAI()}">
+    <button class="btn primary sm" id="ai-send-btn" onclick="sendAI()">Send</button>
+  </div>
+</div>
+<button id="ai-fab" onclick="toggleAI()">🤖</button>
+
+<!-- AUTH SCREEN -->
+<div id="screen-auth" class="screen">
+  <div class="auth-hero">
+    <div style="position:relative;z-index:1">
+      <div class="dsp" style="font-size:48px;letter-spacing:5px;color:#fff;line-height:1">RAILWAYS</div>
+      <div class="dsp" style="font-size:18px;color:rgba(255,255,255,.7);letter-spacing:7px">MCQ PORTAL</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.6);margin-top:5px;font-weight:600">रेलवे विभागीय परीक्षा</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:2px">Indian Railways · Departmental Exams</div>
+    </div>
+  </div>
+  <div style="max-width:420px;margin:0 auto;padding:0 12px 40px">
+
+    <!-- Phone Card -->
+    <div id="card-phone" class="auth-card fadeUp" style="display:none">
+
+      <!-- 🟢 GUEST BUTTON — BIG & FIRST -->
+      <div class="guest-banner">
+        <div style="font-size:22px;margin-bottom:6px">👤</div>
+        <div style="font-weight:800;font-size:15px;color:#16a34a;margin-bottom:4px" data-hi="बिना Login के शुरू करें">Start Without Login</div>
+        <div style="font-size:12px;color:#166534;margin-bottom:10px" data-hi="Guest Mode — सभी Questions & Tests उपलब्ध">Guest Mode — All Questions & Tests Available</div>
+        <button class="btn guest-big full" onclick="guestLogin()">👤 <span data-hi="Guest के रूप में जारी रखें">Continue as Guest / गेस्ट रहें</span></button>
+      </div>
+
+      <div class="divider" data-hi="या Login करें">or Login</div>
+
+      <!-- Firebase loading notice -->
+      <div id="fb-notice">⏳ <span data-hi="Firebase लोड हो रहा है... कृपया 3-5 सेकंड प्रतीक्षा करें।">Firebase loading... please wait 3-5 seconds.</span></div>
+
+      <!-- GOOGLE -->
+      <button class="btn full" onclick="googleLogin()" style="background:#fff;color:#3c4043;border:1.5px solid #dadce0;margin-bottom:8px;font-weight:700;font-size:14px;gap:10px">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Google से Login / Continue with Google
+      </button>
+
+      <div class="divider" data-hi="या Email से">or use email</div>
+
+      <!-- EMAIL -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
+        <input id="em-inp" class="inp" type="email" placeholder="Email address" autocomplete="email">
+        <input id="pw-inp" class="inp" type="password" placeholder="Password (min 6 characters)" autocomplete="current-password">
+      </div>
+      <div class="g2" style="margin-bottom:10px">
+        <button class="btn primary" onclick="emailLogin()">🔑 <span data-hi="लॉगिन">Login</span></button>
+        <button class="btn outline" onclick="emailRegister()">✨ <span data-hi="रजिस्टर">Register</span></button>
+      </div>
+
+      <!-- OTP -->
+      <div class="divider" data-hi="या Mobile OTP से">or mobile OTP</div>
+      <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:9px;padding:10px 12px;margin-bottom:8px;font-size:12px;color:#856404">
+        ⚠️ <strong>OTP limit:</strong> Free plan = 10 SMS/day. Google या Email login बेहतर है।
+      </div>
+      <div style="display:flex;gap:8px">
+        <div style="position:relative;flex:1">
+          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--textLt);font-size:13px;font-weight:700">+91</span>
+          <input id="ph-inp" class="inp" type="tel" inputmode="numeric" placeholder="Mobile Number" maxlength="10" style="padding-left:46px" oninput="this.value=this.value.replace(/\D/g,'')">
+        </div>
+        <button class="btn primary sm" id="otp-btn" onclick="sendOTP()" style="white-space:nowrap">Send OTP</button>
+      </div>
+
+      <div id="auth-err" style="display:none;font-size:12px;color:var(--err);background:var(--errBg);border:1px solid var(--errBdr);border-radius:8px;padding:8px 11px;margin-top:8px;line-height:1.5"></div>
+    </div>
+
+    <!-- OTP Card -->
+    <div id="card-otp" class="auth-card fadeUp" style="display:none">
+      <button onclick="backToPhone()" style="background:none;border:none;color:var(--textMid);cursor:pointer;font-size:13px;margin-bottom:12px;font-weight:600">← Back / वापस</button>
+      <div class="lbl">OTP Verify करें</div>
+      <h2 style="font-size:17px;font-weight:800;margin-bottom:3px">6-digit कोड डालें</h2>
+      <p id="otp-sub" style="font-size:12px;color:var(--textMid);margin-bottom:13px">आपके मोबाइल पर भेजा गया</p>
+      <div class="otp-row">
+        <input class="otp-box" id="ob0" type="tel" inputmode="numeric" maxlength="1" oninput="otpIn(this,0)" onkeydown="otpKey(event,0)">
+        <input class="otp-box" id="ob1" type="tel" inputmode="numeric" maxlength="1" oninput="otpIn(this,1)" onkeydown="otpKey(event,1)">
+        <input class="otp-box" id="ob2" type="tel" inputmode="numeric" maxlength="1" oninput="otpIn(this,2)" onkeydown="otpKey(event,2)">
+        <input class="otp-box" id="ob3" type="tel" inputmode="numeric" maxlength="1" oninput="otpIn(this,3)" onkeydown="otpKey(event,3)">
+        <input class="otp-box" id="ob4" type="tel" inputmode="numeric" maxlength="1" oninput="otpIn(this,4)" onkeydown="otpKey(event,4)">
+        <input class="otp-box" id="ob5" type="tel" inputmode="numeric" maxlength="1" oninput="otpIn(this,5)" onkeydown="otpKey(event,5)">
+      </div>
+      <button class="btn primary full" id="verify-btn" onclick="verifyOTP()">✓ Verify &amp; Login</button>
+      <div style="text-align:center;margin-top:8px">
+        <button onclick="resendOTP()" style="background:none;border:none;color:var(--primary);font-size:12px;cursor:pointer;font-weight:600">OTP फिर भेजें / Resend OTP</button>
+      </div>
+      <div id="otp-err" style="display:none;font-size:12px;color:var(--err);background:var(--errBg);border:1px solid var(--errBdr);border-radius:8px;padding:8px 11px;margin-top:7px"></div>
+    </div>
+
+    <!-- Profile Setup Card -->
+    <div id="card-setup" class="auth-card fadeUp" style="display:none">
+      <div style="text-align:center;font-size:32px;margin-bottom:8px">👋</div>
+      <h2 style="font-size:17px;font-weight:800;text-align:center;margin-bottom:3px" data-hi="अपना प्रोफाइल बनाएं">Complete Your Profile</h2>
+      <p style="font-size:12px;color:var(--textMid);text-align:center;margin-bottom:14px" data-hi="अपना learning experience personalize करें">Personalise your learning experience</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div><div class="lbl">पूरा नाम / Full Name *</div><input id="ps-name" class="inp" placeholder="आपका पूरा नाम"></div>
+        <div><div class="lbl">Gmail</div><input id="ps-gmail" class="inp" type="email" placeholder="yourname@gmail.com"></div>
+        <div><div class="lbl">Employee ID / कर्मचारी आईडी</div><input id="ps-empid" class="inp" placeholder="Railway Employee ID"></div>
+        <div><div class="lbl">Designation / पद</div><input id="ps-desig" class="inp" placeholder="जैसे: Station Master, Guard, TTE"></div>
+        <div><div class="lbl">Department / विभाग *</div>
+          <select id="ps-dept" class="inp">
+            <option value="">विभाग चुनें / Select Dept</option>
+            <option>Commercial</option><option>Operating</option><option>Mechanical</option>
+            <option>Electrical</option><option>Engineering</option><option>Accounts</option>
+            <option>Personnel</option><option>Stores</option><option>Signal &amp; Telecom</option>
+            <option>Medical</option><option>RPF</option>
+          </select>
+        </div>
+        <div><div class="lbl">Railway Zone / रेलवे जोन</div>
+          <select id="ps-zone" class="inp">
+            <option value="">जोन चुनें / Select Zone</option>
+            <option>Central Railway</option><option>Eastern Railway</option><option>East Central Railway</option>
+            <option>East Coast Railway</option><option>North Central Railway</option><option>North Eastern Railway</option>
+            <option>Northeast Frontier Railway</option><option>Northern Railway</option><option>North Western Railway</option>
+            <option>South Central Railway</option><option>South East Central Railway</option><option>South Eastern Railway</option>
+            <option>Southern Railway</option><option>South Coast Railway</option><option>South Western Railway</option>
+            <option>West Central Railway</option><option>Western Railway</option><option>Metro Railway Kolkata</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn primary full" style="margin-top:14px" onclick="saveProfile()">पढ़ाई शुरू करें / Start Learning →</button>
+      <div id="ps-err" style="display:none;font-size:12px;color:var(--err);margin-top:6px;text-align:center"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="screen-main" class="screen">
+  <nav id="nav">
+    <div id="nav-banner"></div>
+    <div id="nav-inner">
+      <div id="nav-logo" onclick="switchTab('home')">RLY<span>·</span>MCQ</div>
+      <div id="nav-tabs"></div>
+      <button id="nav-av" onclick="switchTab('profile')" style="width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-weight:800;font-size:13px;cursor:pointer;flex-shrink:0">?</button>
+    </div>
+  </nav>
+  <div id="main"></div>
+</div>
+
+<div style="position:fixed;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary));opacity:.3;z-index:0;pointer-events:none"></div>
+
+<script>
+'use strict';
+
+// ── LANGUAGE SYSTEM ───────────────────────────────────────────
+let LANG = localStorage.getItem('lang') || 'en';
+
+const T = {
+  // Nav tabs
+  home:     {en:'Home',    hi:'होम'},
+  subjects: {en:'Subjects',hi:'विषय'},
+  test:     {en:'Test',    hi:'टेस्ट'},
+  live:     {en:'Live',    hi:'लाइव'},
+  merit:    {en:'Merit',   hi:'मेरिट'},
+  progress: {en:'Progress',hi:'प्रगति'},
+  profile:  {en:'Profile', hi:'प्रोफाइल'},
+  // Home
+  welcome:          {en:'Welcome back 👋',           hi:'वापस आए 👋'},
+  attempted:        {en:'ATTEMPTED',                 hi:'प्रयास'},
+  accuracy:         {en:'ACCURACY',                  hi:'सटीकता'},
+  streak:           {en:'STREAK',                    hi:'स्ट्रीक'},
+  quickPractice:    {en:'Quick Practice',            hi:'त्वरित अभ्यास'},
+  chapterPYQ:       {en:'Chapter-wise PYQs',         hi:'अध्यायवार PYQs'},
+  timedExam:        {en:'Timed exam mode',           hi:'समयबद्ध परीक्षा'},
+  nextLiveIn:       {en:'Next in',                   hi:'अगला'},
+  mixedSubjects:    {en:'Mixed subjects',            hi:'मिश्रित विषय'},
+  joinLive:         {en:'Join →',                    hi:'जुड़ें →'},
+  // Quiz
+  exitQ:       {en:'← Exit',       hi:'← बाहर'},
+  correct:     {en:'CORRECT!',     hi:'सही!'},
+  explanation: {en:'EXPLANATION',  hi:'व्याख्या'},
+  askRailBot:  {en:'🤖 Ask RailBot to explain more', hi:'🤖 RailBot से और जानें'},
+  skipQ:       {en:'Skip →',       hi:'छोड़ें →'},
+  nextQ:       {en:'Next Question →', hi:'अगला सवाल →'},
+  submitQ:     {en:'Submit & See Results ✓', hi:'जमा करें ✓'},
+  // Results
+  excellent:   {en:'Excellent! 🎉',        hi:'शाबाश! 🎉'},
+  good:        {en:'Good! Review below.',  hi:'अच्छा! नीचे देखें।'},
+  keepPractice:{en:'Keep practising!',     hi:'अभ्यास जारी रखें!'},
+  yourAnswer:  {en:'Your answer:',         hi:'आपका जवाब:'},
+  time:        {en:'Time',                 hi:'समय'},
+  answerReview:{en:'Answer Review',        hi:'उत्तर समीक्षा'},
+  tryAgain:    {en:'Try Again',            hi:'फिर कोशिश करें'},
+  back:        {en:'Back',                 hi:'वापस'},
+  // Misc
+  noData:      {en:'No data yet. Start practising!', hi:'अभी कोई डेटा नहीं। अभ्यास शुरू करें!'},
+  startNow:    {en:'Start Now',            hi:'शुरू करें'},
+  saveChanges: {en:'💾 Save Changes',     hi:'💾 बदलाव सहेजें'},
+  logout:      {en:'🚪 Logout',           hi:'🚪 लॉगआउट'},
+  loading:     {en:'Loading...',           hi:'लोड हो रहा है...'},
+  noEntries:   {en:'No entries today',     hi:'आज कोई प्रविष्टि नहीं'},
+  takeTest:    {en:'Take a test to appear on the board!', hi:'बोर्ड पर आने के लिए टेस्ट दें!'},
+  startTest:   {en:'Take a Test',          hi:'टेस्ट दें'},
+  joinLiveNow: {en:'Join Live Test Now →', hi:'अभी Live टेस्ट दें →'},
+  practiceNow: {en:'Practice Now',         hi:'अभी अभ्यास करें'},
+  mockTest:    {en:'Mock Test',            hi:'मॉक टेस्ट'},
+  today:       {en:"Today's Test Info",   hi:'आज के टेस्ट की जानकारी'},
+  // Subjects
+  backSubj:    {en:'← Back to Subjects',  hi:'← विषय पर वापस'},
+  allRandom:   {en:'🔀 All — Random 20',  hi:'🔀 सभी — 20 Random'},
+  allMixed:    {en:'🌐 Mixed All 9 Subjects', hi:'🌐 सभी 9 विषय मिश्रित'},
+  practice:    {en:'📖 Practice',         hi:'📖 अभ्यास'},
+  testMode:    {en:'⏱ Test Mode',         hi:'⏱ टेस्ट मोड'},
+  from:        {en:'from',                hi:'से'},
+  chapters:    {en:'chapters',            hi:'अध्याय'},
+  // Profile
+  subscribed:  {en:'✅ Active Subscription', hi:'✅ सक्रिय सदस्यता'},
+  fullAccess:  {en:'Full access to all features', hi:'सभी सुविधाओं तक पूर्ण पहुंच'},
+  daysLeft:    {en:'days left in trial',  hi:'दिन बाकी'},
+  trialExpired:{en:'Trial Expired',       hi:'ट्रायल समाप्त'},
+  subscribe:   {en:'Subscribe',           hi:'सब्सक्राइब'},
+  editProfile: {en:'Edit Profile',        hi:'प्रोफाइल संपादित करें'},
+  joinedIn:    {en:'Joined',              hi:'जुड़े'},
+  // Test
+  numQs:       {en:'Number of Questions', hi:'प्रश्नों की संख्या'},
+  subject:     {en:'Subject',             hi:'विषय'},
+  startTest:   {en:'START TEST →',        hi:'टेस्ट शुरू →'},
+  mixedAll:    {en:'🌐 Mixed All Subjects', hi:'🌐 सभी विषय मिश्रित'},
+  // Progress
+  overall:     {en:'OVERALL ACCURACY',   hi:'कुल सटीकता'},
+  yourForte:   {en:'★ YOUR FORTE',       hi:'★ आपकी खूबी'},
+  focusHere:   {en:'↗ FOCUS HERE',       hi:'↗ यहां ध्यान दें'},
+  subjectWise: {en:'Subject-wise',        hi:'विषयवार'},
+  questions:   {en:'questions',           hi:'प्रश्न'},
+};
+
+function t(key) {
+  const entry = T[key];
+  if (!entry) return key;
+  return LANG === 'hi' ? (entry.hi || entry.en) : entry.en;
+}
+
+function toggleLang() {
+  LANG = LANG === 'en' ? 'hi' : 'en';
+  localStorage.setItem('lang', LANG);
+  document.getElementById('lang-btn').textContent = LANG === 'hi' ? 'EN' : 'हिं';
+  // Apply data-hi attributes
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (LANG === 'hi') {
+      if (!el.dataset.en) el.dataset.en = el.textContent;
+      el.textContent = el.dataset.hi;
+    } else {
+      if (el.dataset.en) el.textContent = el.dataset.en;
+    }
+  });
+  // Re-render current tab if app is showing
+  if (document.getElementById('screen-main').classList.contains('active')) renderTab();
+}
+
+// ── FIREBASE CONFIG ───────────────────────────────────────────
+const FBCONFIG = {
+  apiKey:"AIzaSyDzkN98N48dovI9YEULxbv7qzfCrHXC7NQ",
+  authDomain:"my-app-7fe3f.firebaseapp.com",
+  projectId:"my-app-7fe3f",
+  storageBucket:"my-app-7fe3f.firebasestorage.app",
+  messagingSenderId:"837814891712",
+  appId:"1:837814891712:web:c5e63f7208f48635d7a925",
+  databaseURL:"https://my-app-7fe3f-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
+
+// ── SOUND ENGINE ──────────────────────────────────────────────
+let _ac=null;
+function getAC(){if(!_ac)try{_ac=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}return _ac;}
+function beep(f=440,d=.1,t='sine',v=.15,delay=0){
+  const c=getAC();if(!c)return;
+  try{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+  o.type=t;o.frequency.setValueAtTime(f,c.currentTime+delay);
+  g.gain.setValueAtTime(v,c.currentTime+delay);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+delay+d);
+  o.start(c.currentTime+delay);o.stop(c.currentTime+delay+d+.02);}catch(e){}}
+const snd={
+  click:()=>beep(700,.06,'sine',.1),
+  nav:()=>beep(550,.07,'sine',.08),
+  correct:()=>{beep(523,.1,'sine',.18);beep(659,.1,'sine',.18,.12);beep(784,.15,'sine',.18,.24);},
+  wrong:()=>{beep(220,.2,'sawtooth',.14);beep(180,.3,'sawtooth',.1,.18);},
+  send:()=>{beep(440,.07,'sine',.12);beep(660,.1,'sine',.12,.09);},
+  success:()=>{[523,659,784,1047].forEach((f,i)=>beep(f,.13,'sine',.16,i*.1));},
+};
+document.addEventListener('touchstart',()=>getAC(),{once:true});
+document.addEventListener('click',()=>getAC(),{once:true});
+
+// ── PYQ BANK ─────────────────────────────────────────────────
+const PYQ={
+financial:[
+  {q:"Under GFR, re-appropriation powers within a grant vest with?",opts:["President","Ministry of Finance","Head of Department","CAG"],a:2,exp:"GFR Rule 15: Re-appropriation powers within a grant vest with the Head of Department."},
+  {q:"Contingency Fund of India is operated by?",opts:["Parliament","President","Finance Minister","RBI"],a:1,exp:"Article 267: Contingency Fund placed at disposal of the President for unforeseen expenditure."},
+  {q:"Supplementary Demands for Grants are under which Article?",opts:["Article 113","Article 115","Article 116","Article 266"],a:1,exp:"Article 115 of Constitution provides for Supplementary, Additional or Excess Grants."},
+  {q:"Railway Budget merged with Union Budget from?",opts:["2015-16","2016-17","2017-18","2018-19"],a:2,exp:"Railway Budget merged with Union Budget from 2017-18, ending the 92-year-old practice."},
+  {q:"Vote on Account means?",opts:["Interim authorisation for expenditure","Vote for new taxes","Opposition budget","Supplementary budget"],a:0,exp:"Vote on Account = authorisation for Govt to draw funds pending passage of the full budget."},
+  {q:"Constitutional authority for auditing Railway accounts?",opts:["CGA","CAG","Railway Board","Finance Ministry"],a:1,exp:"CAG under Article 148 audits all Govt accounts including Railways."},
+  {q:"Imprest cash is for?",opts:["Capital expenditure","Small day-to-day contingent expenses","Staff salaries","Fixed assets"],a:1,exp:"Imprest = small fixed sum for petty contingent expenses, replenished on voucher submission."},
+  {q:"Internal check in Railways is exercised by?",opts:["Operating Dept","Finance/Accounts Dept","Vigilance","Personnel Dept"],a:1,exp:"Finance/Accounts Dept exercises internal check for regularity and propriety of expenditure."},
+  {q:"Festival Advance: maximum monthly installments for recovery?",opts:["6","12","3","24"],a:1,exp:"Festival advance: recoverable in maximum 12 equal monthly installments."},
+  {q:"PAO stands for?",opts:["Pay and Accounts Officer","Principal Accounts Office","Public Accounts Officer","Pay Audit Office"],a:0,exp:"PAO = Pay and Accounts Officer — pre-audits bills and maintains accounts."},
+  {q:"Consolidated Fund of India is under?",opts:["Article 265","Article 266","Article 267","Article 268"],a:1,exp:"Article 266 establishes Consolidated Fund — all Govt receipts credited here."},
+  {q:"DRF on Indian Railways stands for?",opts:["Depreciation Reserve Fund","Development Reserve Fund","Divisional Revenue Fund","Deferred Reserve Fund"],a:0,exp:"DRF = Depreciation Reserve Fund, maintained to finance renewals and replacements."},
+  {q:"Capital-at-Charge means?",opts:["Employee loans","Capital invested by Govt in Railways","Working capital","Debentures"],a:1,exp:"Capital-at-Charge = total capital invested by the Government in Railway assets."},
+  {q:"Pink Book in Railways contains?",opts:["Staff records","Detailed estimates of works expenditure","Train timings","Stores catalogue"],a:1,exp:"Pink Book = detailed statement of capital and revenue works included in Railway budget."},
+  {q:"HBA is limited to how many months' basic pay?",opts:["24","34","50","60"],a:2,exp:"House Building Advance: limited to 50 months basic pay or estimated cost, whichever is less."},
+  {q:"Operating Ratio means?",opts:["Profit ratio","Working expenses as % of gross traffic receipts","Staff ratio","Asset utilisation"],a:1,exp:"Operating Ratio = (Working expenses / Gross traffic receipts) × 100. Lower = better."},
+  {q:"IREPS portal is for?",opts:["Employee services","e-Procurement of Railway stores","Ticket booking","Train running"],a:1,exp:"IREPS = Indian Railways e-Procurement System for online tendering and procurement."},
+  {q:"Demand No.1 in Railway budget is for?",opts:["Rolling stock","General Superintendence & Services","Track renewal","Electrification"],a:1,exp:"Demand 1 = General Superintendence and Services (Railway Board and HQ establishment)."},
+  {q:"Tender validity period under GFR?",opts:["30 days","60 days","90 days","120 days"],a:2,exp:"Tenders are generally valid for 90 days from date of opening."},
+  {q:"Revenue Grant heads are under Demand series?",opts:["Demand 1-5","Demand 1-16","Demand 17-18","Demand 1-3"],a:1,exp:"Revenue grants cover Demands 1 to 16 covering all revenue working expenses of Railways."},
+],
+establishment:[
+  {q:"Maximum Earned Leave accumulation?",opts:["240 days","300 days","180 days","360 days"],a:1,exp:"CCS Leave Rules: Maximum 300 days EL can be accumulated at any time."},
+  {q:"Casual Leave for Group C employee per year?",opts:["8 days","10 days","12 days","15 days"],a:1,exp:"Group C employees: 10 days Casual Leave per calendar year."},
+  {q:"Maternity Leave on full pay?",opts:["90 days","135 days","180 days","120 days"],a:2,exp:"Maternity Leave: 180 days on full pay for first two surviving children."},
+  {q:"APAR stands for?",opts:["Annual Performance Appraisal Report","Annual Pay Record","Annual Promotion Report","Annual Attendance Record"],a:0,exp:"APAR = Annual Performance Appraisal Report, replacing Annual Confidential Report (ACR)."},
+  {q:"7th Pay Commission fitment factor?",opts:["2.57","2.67","2.77","2.47"],a:0,exp:"7th CPC: Uniform fitment factor of 2.57 applied to all Central Government employees."},
+  {q:"Minimum qualifying service for pension?",opts:["5 years","10 years","15 years","20 years"],a:1,exp:"Minimum 10 years qualifying service is required for pension eligibility."},
+  {q:"HRA city categories under 7th CPC?",opts:["2","3","4","5"],a:1,exp:"3 categories: X cities 27%, Y cities 18%, Z cities 9% of basic pay."},
+  {q:"Probation period for Group C direct recruits?",opts:["1 year","2 years","3 years","6 months"],a:1,exp:"Group C direct recruits: 2 years probation as per Railway Service Rules."},
+  {q:"Superannuation age for Railway employees?",opts:["58","60","62","65"],a:1,exp:"Superannuation age = 60 years for Central Government/Railway employees."},
+  {q:"NPS applies to employees recruited from?",opts:["1990","2000","2004","2010"],a:2,exp:"NPS implemented for employees recruited on or after 1st January 2004."},
+  {q:"Study Leave maximum duration?",opts:["1 year","2 years","3 years","4 years"],a:1,exp:"Study Leave: maximum 2 years throughout the entire service period."},
+  {q:"Child Care Leave total days?",opts:["360","540","720","730"],a:3,exp:"CCL: 730 days during entire service for women employees with children under 18."},
+  {q:"Paternity Leave for male employees?",opts:["7 days","10 days","15 days","30 days"],a:2,exp:"Paternity Leave: 15 days for male employees with less than 2 surviving children."},
+  {q:"Half Pay Leave earned per year?",opts:["10 days","15 days","20 days","24 days"],a:1,exp:"HPL: 15 days per completed year of service, credited 1st Jan and 1st July."},
+  {q:"Maximum EL encashable at retirement?",opts:["240 days","300 days","180 days","360 days"],a:1,exp:"Maximum 300 days of Earned Leave can be encashed at the time of retirement."},
+  {q:"Commuted Leave maximum at one time?",opts:["60 days","90 days","180 days","240 days"],a:2,exp:"Commuted Leave: up to 180 days at a time, requires medical certificate."},
+  {q:"Special Casual Leave for sports representation?",opts:["10 days","15 days","30 days","60 days"],a:2,exp:"Special Casual Leave for representing India in sports: up to 30 days per year."},
+  {q:"Leave salary during Earned Leave?",opts:["Last pay drawn","Average pay","Half pay","No pay"],a:0,exp:"Leave salary during Earned Leave = Last pay drawn (full pay)."},
+  {q:"Transport Allowance for Level 9+ in X cities (7th CPC)?",opts:["₹1600+DA","₹3200+DA","₹3600+DA","₹7200+DA"],a:3,exp:"7th CPC: Transport Allowance for Level 9 and above in X cities = ₹7200 + DA."},
+  {q:"EOL (Extraordinary Leave) is granted when?",opts:["No other leave is due","On annual increment","EL exceeds 300","On maternity"],a:0,exp:"EOL is granted only when no other leave is due and admissible, at authority's discretion."},
+],
+stores:[
+  {q:"Full form of DGS&D?",opts:["Directorate General Supplies & Disposals","Department General Stores","Division Govt Stores","Directorate General Stores Development"],a:0,exp:"DGS&D = Directorate General of Supplies & Disposals — central purchase organisation of GOI."},
+  {q:"Codal life of an asset means?",opts:["Date of manufacture","Prescribed useful life per Railway codes","Period of warranty","Tax depreciation period"],a:1,exp:"Codal life = prescribed useful life as per Railway codes for depreciation and condemnation."},
+  {q:"Purpose of Bin Card?",opts:["Financial transactions","Physical stock record at storage location","Vendor payments","Transport schedule"],a:1,exp:"Bin Card = physical record of receipts, issues and balance maintained at storage location."},
+  {q:"EOQ stands for?",opts:["Excess Order Quantity","Economic Order Quantity","Emergency Order Query","Estimated Output Quantity"],a:1,exp:"EOQ = Economic Order Quantity that minimises total inventory holding and ordering costs."},
+  {q:"ABC Analysis in stores?",opts:["Vendor rating","Inventory classification for priority control","Employee appraisal","Budget allocation"],a:1,exp:"ABC: A=high value, B=medium, C=low value items — focus control on A-category items."},
+  {q:"Demurrage in Railways means?",opts:["Penalty for overloading","Charges for detaining wagons beyond free time","Late delivery","Goods damage"],a:1,exp:"Demurrage = charge levied for detaining wagons beyond permissible free time."},
+  {q:"Document raised when stores received from supplier?",opts:["Purchase Order","Inspection Note / Receipt Note","Bin Card","Store Requisition"],a:1,exp:"Inspection Note / GRN prepared when stores received from supplier after inspection."},
+  {q:"Scrap in stores means?",opts:["New materials","Unserviceable materials with only salvage value","Surplus materials","Imported materials"],a:1,exp:"Scrap = materials that became unserviceable, valuable only for metal/salvage recovery."},
+  {q:"Tender open for minimum?",opts:["7 days","14 days","21 days","30 days"],a:2,exp:"GFR: tender documents must be open for minimum 21 days for adequate bidding time."},
+  {q:"Rate Contract purpose?",opts:["One transaction price fix","Price fix for multiple purchases over a period","Vendor evaluation","Purchase audit"],a:1,exp:"Rate Contract fixes commodity price for a specified period for multiple purchases."},
+  {q:"LTE (Limited Tender Enquiry) used when value exceeds?",opts:["₹10,000","₹25,000","₹1 lakh","₹5 lakh"],a:1,exp:"LTE used when value exceeds ₹25,000 and up to ₹5 lakh, requiring at least 3 quotations."},
+  {q:"Annual Priced Stores Account (APSA) rendered to?",opts:["DRM","CAG","Railway Board","General Manager"],a:1,exp:"APSA rendered to CAG of India for audit of stores accounts."},
+  {q:"OTE (Open Tender Enquiry) mandatory when value exceeds?",opts:["₹1 lakh","₹5 lakh","₹10 lakh","₹25 lakh"],a:1,exp:"OTE (Global/Open Tender) mandatory when estimated value exceeds ₹5 lakh."},
+  {q:"Imprest stores are?",opts:["Large capital items","Small frequently-used items kept at work site","Imported items","Emergency items"],a:1,exp:"Imprest stores = small stock of frequently used items maintained at site for immediate use."},
+  {q:"Priced Stores Ledger shows?",opts:["Approved vendor list","Stock in monetary/value terms","Tender document","Annual budget"],a:1,exp:"Priced Stores Ledger = record showing monetary value of stores received, issued and balance."},
+  {q:"Victualling refers to?",opts:["Track maintenance","Food and catering supplies","Electrical stores","Loco components"],a:1,exp:"Victualling = food and catering supplies for trains and station refreshment rooms."},
+  {q:"MRP in stores management means?",opts:["Material Requisition Procedure","Maximum Retail Price","Minimum Reorder Point","Material Record Policy"],a:2,exp:"MRP = Minimum Reorder Point — stock level at which a fresh order must be triggered."},
+  {q:"Annual stock verification purpose?",opts:["Update vendor list","Reconcile physical stock with ledger balance","Budget preparation","Employee appraisal"],a:1,exp:"Annual stock verification reconciles physical stock with book balance."},
+  {q:"Surplus stores reported to?",opts:["Station Master","Divisional Stores Superintendent","DRM","General Manager"],a:1,exp:"Surplus stores reported to Divisional Stores Superintendent for proper disposal."},
+  {q:"IREPS portal is for?",opts:["Employee services","e-Procurement of stores","Ticket booking","Train running"],a:1,exp:"IREPS = Indian Railways e-Procurement System for online tendering and procurement."},
+],
+operating:[
+  {q:"Maximum speed on 'B' class loop line for passenger trains?",opts:["15 km/h","30 km/h","45 km/h","50 km/h"],a:1,exp:"G&SR: Maximum speed on B class loop line = 30 km/h for passenger trains."},
+  {q:"T/A 912 authority is for?",opts:["Starter Signal clearance","Advance Starter","Enter occupied block section","Cross level crossing"],a:2,exp:"T/A 912 = written authority to Loco Pilot to enter an already-occupied block section."},
+  {q:"Absolute Block System ensures?",opts:["Only one train in block section at a time","Two trains simultaneously","Automatic signalling","Speed restriction"],a:0,exp:"Absolute Block: only one train in a block section between two stations at any given time."},
+  {q:"Caution Order instructs loco pilot to?",opts:["Proceed at full speed","Reduce speed at specified location","Stop immediately","Change route"],a:1,exp:"Caution Order = written instruction to reduce speed to specified limit at a particular location."},
+  {q:"Line Clear means?",opts:["Permission to depart","Authority that section is clear for next train","All signals green","Track maintenance clearance"],a:1,exp:"Line Clear = authority from block station ahead confirming block section is clear."},
+  {q:"White diamond board indicates?",opts:["Stop and proceed","Whistle board","Unprotected level crossing","Speed restriction end"],a:2,exp:"White diamond board = unprotected (unmanned) level crossing ahead."},
+  {q:"Starter Signal controls?",opts:["Train entry into station","Departure into block section","Loop line entry","Level crossing"],a:1,exp:"Starter Signal controls departure of trains from station into the block section ahead."},
+  {q:"Red signal in colour light system means?",opts:["Caution","Proceed","STOP","Speed limit ahead"],a:2,exp:"Red = STOP. Train must not pass this signal without specific written authority."},
+  {q:"SPAD means?",opts:["Signal Passed At Danger","Speed Passed Alert Device","Station Platform Access Door","Special Passenger Allowance"],a:0,exp:"SPAD = Signal Passed At Danger — most serious signal violation, major cause of accidents."},
+  {q:"Home Signal protects?",opts:["Train departure","Entry of trains into station limits","Level crossings","Tunnel entry"],a:1,exp:"Home Signal = outermost stop signal protecting entry of trains into station limits."},
+  {q:"Guard is responsible for?",opts:["Driving the train","Safe running of entire train and punctuality","Only passenger safety","Ticketing"],a:1,exp:"Guard = in-charge of the entire train: safe running, punctuality, communication with driver."},
+  {q:"Speed restriction on un-inspected track after flood?",opts:["10 km/h","15 km/h","20 km/h","30 km/h"],a:0,exp:"10 km/h restriction on un-inspected track after floods until engineer certifies safety."},
+  {q:"Fog signal (detonator) placement?",opts:["Beside the rail","On top of the rail","Under the sleeper","On signal post"],a:1,exp:"Fog signals placed on top of rail — explode when train wheel passes, warning the loco pilot."},
+  {q:"Working Time Table (WTT) is prepared by?",opts:["Railway Board","Zonal HQ Operating Dept","DRM","Station Master"],a:1,exp:"WTT prepared by Zonal Railway HQ Operating Department for all trains in the zone."},
+  {q:"Locking of Points ensures?",opts:["Points are illuminated","Points don't move while train passes over them","Points are lubricated","Points are visible"],a:1,exp:"Point locking ensures points remain firmly locked in position while a train passes over them."},
+  {q:"Trap siding protects against?",opts:["Derailment","Unauthorised entry","Runaway vehicles entering main line","Flooding"],a:2,exp:"Trap siding traps runaway vehicles to prevent them entering the main running line."},
+  {q:"Tommy Bar is used for?",opts:["Signal operation","Manually operating point levers","Coupling wagons","Measuring gauge"],a:1,exp:"Tommy Bar = tool for manually operating points when mechanical/electrical system fails."},
+  {q:"Protection of disabled train requires red flags?",opts:["1","2","3","4"],a:2,exp:"3 red flags: one at each end of disabled train and one at the point of obstruction."},
+  {q:"Flash butt welding is used for?",opts:["Coach repair","Joining rails into Long Welded Rails","Signal wiring","Point repair"],a:1,exp:"Flash butt welding joins rails to form Long Welded Rails (LWR), eliminating fish-plate joints."},
+  {q:"Out-of-course stop means?",opts:["Scheduled stop","Unscheduled halt due to emergency or signals","Rest halt","Engine failure stop"],a:1,exp:"Out-of-course stop = any unscheduled halt other than at a scheduled stopping station."},
+],
+mechanical:[
+  {q:"POH stands for?",opts:["Periodic Over-Haul","Pre-Operation Handover","Partial Over-Haul","Plant Operation Hours"],a:0,exp:"POH = Periodic Over-Haul — comprehensive maintenance overhaul at fixed intervals."},
+  {q:"Indian Railways Broad Gauge width?",opts:["1435 mm","1676 mm","1000 mm","762 mm"],a:1,exp:"BG track = 1676 mm (5 ft 6 in) — widest main gauge in world."},
+  {q:"Hot Box refers to?",opts:["Heated waiting room","Overheating of axle box due to bearing failure","Freight wagon type","Signal equipment"],a:1,exp:"Hot Box = overheating of axle box due to bearing failure or loss of lubrication."},
+  {q:"ICF stands for?",opts:["Indian Coach Factory","Integral Coach Factory","Industrial Car Frame","Indian Central Factory"],a:1,exp:"ICF = Integral Coach Factory, Chennai — manufactures integral monocoque coaches."},
+  {q:"LHB coaches are safer because of?",opts:["Higher speed","Anti-climbing couplers preventing telescoping","Better AC","Lower weight"],a:1,exp:"LHB's anti-climbing CBC couplers prevent telescoping during accidents, drastically reducing casualties."},
+  {q:"Wheel Flat is caused by?",opts:["Tyre puncture","Wheel skidding during braking","Worn bearing","Damaged rail"],a:1,exp:"Wheel flat = flat spot on wheel tread caused by wheel skidding (sliding without rolling) during braking."},
+  {q:"WAP-7 locomotive is used for?",opts:["Goods traffic","High-speed passenger trains","Shunting","Metre gauge"],a:1,exp:"WAP-7 = high-powered 3-phase AC electric loco for high-speed passenger train haulage."},
+  {q:"DEMU stands for?",opts:["Diesel Electric Multiple Unit","Double Engine Multiple Unit","Diesel Engine Motor Unit","Double Electric Motor Unit"],a:0,exp:"DEMU = Diesel Electric Multiple Unit — self-propelled diesel-electric passenger coaches."},
+  {q:"Vande Bharat Express maximum design speed?",opts:["160 km/h","180 km/h","200 km/h","220 km/h"],a:1,exp:"Vande Bharat (Train-18) maximum design speed = 180 km/h."},
+  {q:"Bogie refers to?",opts:["Engine compartment","Wheel-axle assembly under coach","Pantograph","Braking system"],a:1,exp:"Bogie = wheel-axle assembly framework mounted under carriage for support and guidance."},
+  {q:"Pantograph on electric loco is used for?",opts:["Collecting current from OHE","Braking","Speed measurement","Direction control"],a:0,exp:"Pantograph collects traction current from overhead catenary wire (OHE) to power the loco."},
+  {q:"WAG-9 is?",opts:["Diesel goods loco","3-phase AC electric goods loco","Steam engine","Diesel EMU"],a:1,exp:"WAG-9 = 3-phase AC electric goods locomotive, most powerful goods loco on Indian Railways."},
+  {q:"ROH means?",opts:["Running On Hour","Return Over-Haul","Routine Over-Haul","Repair of Hot-box"],a:2,exp:"ROH = Routine Over-Haul — intermediate maintenance check between two POH cycles."},
+  {q:"SLR in trains means?",opts:["Speed Limit Register","Second class cum Luggage cum Rear van","Signal Light Relay","Station Loco Record"],a:1,exp:"SLR = Second class cum Luggage cum Rear van — combined luggage van, Guard compartment and passenger space."},
+  {q:"Indian Railways electric traction frequency?",opts:["25 Hz 25kV AC","50 Hz 25kV AC","60 Hz 25kV AC","DC 1500V"],a:1,exp:"Indian Railways: 25 kV, 50 Hz single-phase AC for electric traction."},
+  {q:"USFD testing on rails detects?",opts:["Internal flaws/cracks in rails","Rail temperature","Track alignment","Ballast depth"],a:0,exp:"USFD = Ultrasonic Flaw Detection — detects internal cracks in rails before failure."},
+  {q:"CBC stands for?",opts:["Central Buffer Coupler","Centre Buffer Coupler","Cab Brake Controller","Coach Buffer Connection"],a:1,exp:"CBC = Centre Buffer Coupler — provides coupling and shock absorption on LHB and freight stock."},
+  {q:"BG coaching stock axle load limit?",opts:["13 tonnes","16 tonnes","20 tonnes","25 tonnes"],a:1,exp:"BG coaching stock standard axle load limit = 16 tonnes."},
+  {q:"Vacuum brake works by?",opts:["Atmospheric pressure on vacuum","Electric braking","Hydraulic pressure","Hand operation"],a:0,exp:"Vacuum brake: atmospheric pressure acts on vacuum cylinder to apply brakes. Now replaced by air brakes."},
+  {q:"Rake formation means?",opts:["Track formation","Coupling of coaches to form a train set","Engine assembly","Platform arrangement"],a:1,exp:"Rake = a set of coaches coupled together to form a train, usually maintained as a fixed formation."},
+],
+gk:[
+  {q:"First railway in India?",opts:["1853","1848","1860","1875"],a:0,exp:"First train: Bombay (Bori Bunder) to Thane, 34 km, on 16 April 1853."},
+  {q:"Headquarters of Indian Railways?",opts:["Mumbai","New Delhi","Chennai","Kolkata"],a:1,exp:"Railway Board HQ is at Rail Bhavan, Raisina Road, New Delhi."},
+  {q:"Longest railway platform in India?",opts:["Kharagpur","Gorakhpur","Kollam","Surat"],a:1,exp:"Gorakhpur platform, UP — approximately 1.3 km long."},
+  {q:"Number of railway zones in India?",opts:["16","17","18","19"],a:2,exp:"18 zones currently. Newest: South Coast Railway (SCoR) formed 2019."},
+  {q:"RDSO stands for?",opts:["Railway Design Standards Org","Research Designs Standards Org","Railway Development Safety Org","Rolling Designs Systems"],a:1,exp:"RDSO = Research Designs and Standards Organisation, headquartered in Lucknow."},
+  {q:"Vande Bharat Express technical name?",opts:["Train-16","Train-18","Train-20","Train-22"],a:1,exp:"Vande Bharat = Train-18, India's first semi-high-speed self-propelled train set."},
+  {q:"Highest railway station in India?",opts:["Shimla","Ghum (Ghoom)","Kalka","Darjeeling"],a:1,exp:"Ghum (Ghoom), West Bengal at 2,258m above sea level — highest railway station in India."},
+  {q:"Indian Railways world's ___ largest network?",opts:["2nd","3rd","4th","5th"],a:2,exp:"Indian Railways = 4th largest railway network globally by route kilometres."},
+  {q:"KAVACH developed by?",opts:["ISRO","RDSO","DRDO","BHEL"],a:1,exp:"KAVACH (Automatic Train Protection) developed by RDSO with private partners."},
+  {q:"IRCTC stands for?",opts:["Indian Rail Catering Tourism Corp","Indian Railway Catering Transport Corp","Indian Rail Commerce Tourism Corp","Indian Railway Central Tourism Corp"],a:0,exp:"IRCTC = Indian Railway Catering and Tourism Corporation."},
+  {q:"Chenab Rail Bridge height above river?",opts:["259 m","359 m","459 m","159 m"],a:1,exp:"Chenab Rail Bridge in J&K is 359m above the river — world's highest railway bridge."},
+  {q:"RPF under which Ministry?",opts:["Home","Defence","Railways","Finance"],a:2,exp:"RPF = Railway Protection Force, a statutory force under Ministry of Railways."},
+  {q:"Rajdhani Express first run?",opts:["1967","1969","1972","1975"],a:1,exp:"First Rajdhani Express: New Delhi to Howrah on 3 March 1969."},
+  {q:"RVNL stands for?",opts:["Railway Vigilance National Lab","Rail Vikas Nigam Limited","Railway Vehicle Navigation Lab","Rail Vehicle Network"],a:1,exp:"RVNL = Rail Vikas Nigam Limited, executes capacity augmentation and new line projects."},
+  {q:"Konkan Railway route?",opts:["Mumbai-Goa","Roha-Thokur","Goa-Mangalore","Roha-Mangalore"],a:3,exp:"Konkan Railway = Roha (Maharashtra) to Thokur (Karnataka) — 741 km."},
+  {q:"CRIS stands for?",opts:["Centre Railway Info Systems","Central Rail Information Services","Centre for Railway Information Systems","Central Railway Intelligence"],a:2,exp:"CRIS = Centre for Railway Information Systems — develops IT solutions for Indian Railways."},
+  {q:"Article for Official Language Hindi?",opts:["Article 340","Article 343","Article 356","Article 370"],a:1,exp:"Article 343: Hindi in Devanagari script is Official Language of the Union."},
+  {q:"National Rail Plan 2030 route target?",opts:["50,000 km","64,000 km","1,00,000 km","1,30,000 km"],a:3,exp:"National Rail Plan 2030 targets 1,30,000 km of routes including new lines and doubling."},
+  {q:"Mission Raftaar target for goods train speed?",opts:["30 km/h","50 km/h","75 km/h","100 km/h"],a:1,exp:"Mission Raftaar: double average goods train speed from ~25 km/h to 50 km/h."},
+  {q:"Project UTKRISHT is for?",opts:["Station beautification","Locomotive upgrade","Coach upgradation program","Signal upgrade"],a:2,exp:"Project Utkrisht = coach upgradation program to improve facilities in non-AC Railway coaches."},
+],
+accounts:[
+  {q:"Zonal Railways render accounts through?",opts:["CAG","FA&CAO","DRM","Financial Commissioner"],a:1,exp:"FA&CAO (Financial Adviser & Chief Accounts Officer) of each zone renders accounts to Railway Board."},
+  {q:"Traffic Accounts Office (TAO) handles?",opts:["Staff accounts","Revenue accounts from traffic","Capital accounts","Material accounts"],a:1,exp:"TAO handles accounts of traffic receipts — passenger, freight, and other traffic revenues."},
+  {q:"Annual accounts of Railways audited by?",opts:["Internal Audit","CAG","Railway Board","Finance Ministry"],a:1,exp:"CAG of India audits annual accounts of Indian Railways under Article 149 of the Constitution."},
+  {q:"Suspense accounts maintained for?",opts:["Long-term investments","Temporary entries pending final adjustment","Employee loans","Capital expenditure"],a:1,exp:"Suspense accounts hold temporary entries that will be cleared to final accounting heads later."},
+  {q:"Plan Head 11 in Railway capital budget?",opts:["New lines","Track renewals","Rolling stock","Staff quarters"],a:2,exp:"Plan Head 11 = Rolling Stock (locomotives, coaches, wagons)."},
+  {q:"Appropriation Accounts submitted to Parliament through?",opts:["Finance Ministry","CAG of India","Railway Board","Ministry of Railways"],a:1,exp:"Appropriation Accounts finalised by CAG and submitted to Parliament."},
+  {q:"Works Expenditure charged to?",opts:["Revenue head only","Capital head only","Both Revenue and Capital as applicable","Neither"],a:2,exp:"Works expenditure may be charged to Revenue or Capital head depending on nature and cost of work."},
+  {q:"DG in Railway accounts stands for?",opts:["Deputy General","Demand for Grant","Divisional Grant","Director General"],a:1,exp:"DG = Demand for Grant — the parliamentary unit through which Railway budget is voted."},
+  {q:"Non-Tax Revenue (NTR) of Railways includes?",opts:["Only passenger fares","Only freight","Freight, coaching and sundry earnings","Tax collections"],a:2,exp:"NTR = all Railway receipts: freight, coaching (passenger), and sundry/miscellaneous revenues."},
+  {q:"Pink Book contains?",opts:["Staff records","Detailed estimates of works","Train timings","Stores catalogue"],a:1,exp:"Pink Book = detailed statement of capital and revenue works included in Railway budget."},
+  {q:"BPAC stands for?",opts:["Budget Planning Accounting Committee","Budget and Planning Appraisal Cell","Board's Programme and Accounts Committee","Basic Pay Accounts Cell"],a:2,exp:"BPAC = Board's Programme and Accounts Committee — reviews and finalises Railway budget programmes."},
+  {q:"Advance Correction Slip (ACS) is for?",opts:["Correcting accidents","Amending accounting codes/manuals","Adjusting employee pay","Modifying budgets"],a:1,exp:"ACS = Advance Correction Slip — official amendment to Railway accounting manuals and codes."},
+  {q:"Token Transit Account (TTA) is?",opts:["Loco driver account","Inter-divisional goods-in-transit account","Token balance","Travel account"],a:1,exp:"TTA records freight earnings for goods in transit across divisions/zones pending final billing."},
+  {q:"Earnings per Revenue Tonne Km (ERTK) measures?",opts:["Passenger revenue","Freight revenue per unit","Staff earnings","Interest earned"],a:1,exp:"ERTK = freight revenue per net tonne km — key efficiency indicator for goods traffic."},
+  {q:"P-Way (Permanent Way) refers to?",opts:["Permanent wages","Track and infrastructure","Personnel working","Procurement ways"],a:1,exp:"P-Way = Permanent Way — the permanent track infrastructure including rails, sleepers, ballast."},
+],
+technical:[
+  {q:"USFD testing on rails is for?",opts:["Ultrasonic flaw detection","Uniform speed detection","Ultra-safe distance","Under-sleeper fixing"],a:0,exp:"USFD = Ultrasonic Flaw Detection — detects internal cracks in rails before failure."},
+  {q:"LWR panels minimum length?",opts:["50 m","100 m","250 m","500 m"],a:2,exp:"LWR (Long Welded Rail) panels: minimum 250 m length, eliminating joints over that length."},
+  {q:"SEJ stands for?",opts:["Safety End Joint","Switch Expansion Joint","Standard End Joint","Sleeper End Junction"],a:1,exp:"SEJ = Switch Expansion Joint — allows thermal expansion/contraction at LWR panel ends."},
+  {q:"Ballast depth under sleeper on BG main line?",opts:["150 mm","200 mm","250 mm","300 mm"],a:2,exp:"Standard ballast cushion on BG main line = 250 mm depth below sleeper base."},
+  {q:"PSC sleepers material?",opts:["Pre-Stressed Concrete","Plastic Steel Composite","Post-stressed Clay","Premium Steel Casting"],a:0,exp:"PSC = Pre-Stressed Concrete sleepers — standard on BG tracks for load distribution."},
+  {q:"Gauge is measured as?",opts:["Outside to outside of rails","Inside face to inside face 14mm below top of rail","Centre to centre","Top to base"],a:1,exp:"Gauge = distance between inner faces of rail heads measured 14mm below the top of rail."},
+  {q:"OHE stands for?",opts:["Over Head Equipment","Overhead Electric","Over Head Expenditure","Outer High Energy"],a:0,exp:"OHE = Over Head Equipment — the overhead catenary system for electric traction supply."},
+  {q:"Standard rail section on BG main lines?",opts:["52 kg/m","60 kg/m","75 kg/m","45 kg/m"],a:1,exp:"60 kg/m (IRS-T-12) rails are standard on BG main lines for high-speed heavy traffic."},
+  {q:"Cant in track is provided to?",opts:["Increase speed","Counter centrifugal force on curves","Reduce noise","Improve drainage"],a:1,exp:"Cant (superelevation) = raising outer rail on curves to counter centrifugal force on trains."},
+  {q:"Maximum cant on BG main line?",opts:["75 mm","100 mm","165 mm","200 mm"],a:2,exp:"Maximum cant on BG main line = 165 mm (for high-speed routes up to 160 km/h)."},
+  {q:"Points and Crossings (P&C) are for?",opts:["Speed measurement","Transferring trains from one track to another","Joining rails","Signal detection"],a:1,exp:"Points & Crossings enable trains to switch from one track to another at junctions and stations."},
+  {q:"TCAS on Indian Railways is?",opts:["Train Collision Avoidance System","Track Circuit Alert System","Traction Current Alert","Train Communication Audio"],a:0,exp:"TCAS = Train Collision Avoidance System — earlier ATP system, being replaced by KAVACH."},
+  {q:"Kink in track refers to?",opts:["Broken rail","Sudden lateral deviation in alignment","Dip in track level","Loose bolt"],a:1,exp:"Kink = sudden/sharp lateral deviation in rail alignment that can cause derailment."},
+  {q:"Track Geometry Car (TGC) measures?",opts:["Train weight","Track geometry parameters","Rail temperature","Ballast depth"],a:1,exp:"TGC measures track geometry: alignment, level, gauge, twist and cross-level at speed."},
+  {q:"Indian Railways AC traction frequency?",opts:["25 Hz","50 Hz","60 Hz","100 Hz"],a:1,exp:"Indian Railways: 25 kV, 50 Hz single-phase AC for electric traction (standard since 1960s)."},
+],
+safety:[
+  {q:"SWR stands for?",opts:["Station Working Rules","Safe Working Regulations","Standard Working Report","Speed Warning Register"],a:0,exp:"SWR = Station Working Rules — station-specific rules prepared and issued by DRM."},
+  {q:"ART stands for?",opts:["Accident Relief Train","Automatic Recovery Track","Aerial Rescue Team","Accident Reporting Time"],a:0,exp:"ART = Accident Relief Train — pre-positioned at key stations with cranes and relief equipment."},
+  {q:"ARMV stands for?",opts:["Accident Relief Medical Van","Automatic Rail Motor Vehicle","Accident Recovery Vehicle","Advanced Rail Monitoring Van"],a:0,exp:"ARMV = Accident Relief Medical Van — carries doctors and medical equipment to accident sites."},
+  {q:"SPAD is?",opts:["Signal Passed At Danger","Speed Passed Alert Device","Station Platform Access","Special Passenger Allowance"],a:0,exp:"SPAD = Signal Passed At Danger — most serious signal violation causing accidents."},
+  {q:"Speed on un-inspected track after flood?",opts:["10 km/h","15 km/h","20 km/h","30 km/h"],a:0,exp:"10 km/h restriction on un-inspected track after floods until engineer certifies safety."},
+  {q:"Safety of Railways overseen by?",opts:["DRM","Commissioner of Railway Safety (CRS)","GM","Railway Board Member Safety"],a:1,exp:"CRS = Commissioner of Railway Safety — independent authority under Ministry of Civil Aviation."},
+  {q:"Man-in-between accident is?",opts:["Train collision","Person trapped between moving vehicles during shunting","Level crossing accident","Fire"],a:1,exp:"Man-in-between = person trapped/crushed between railway vehicles during shunting operations."},
+  {q:"PTW (Permit to Work) is required for?",opts:["Driving trains","Working on or near running lines","Ticketing","Freight loading"],a:1,exp:"PTW = Permit to Work — mandatory authority before any work on or near running lines."},
+  {q:"Unusual Occurrence Register (UOR) records?",opts:["Safety plan","Unusual incidents and accidents","Staff duty roster","Signal maintenance"],a:1,exp:"UOR records all unusual occurrences, incidents and accidents at stations/sections."},
+  {q:"Track patrolman's duty is?",opts:["Drive trains","Walk assigned beat and report track defects","Operate signals","Collect tickets"],a:1,exp:"Track patrolman (Keymen/Gangman) walks assigned beat to detect and report track defects."},
+  {q:"First priority in accident relief?",opts:["Rescuing passengers","Restoration of track","Enquiry","Media briefing"],a:0,exp:"First priority = rescuing passengers and attending to the injured (medical relief)."},
+  {q:"Hotline phone at stations is for?",opts:["Passenger complaints","Direct emergency communication between stations","Train enquiry","Booking"],a:1,exp:"Hotline = direct emergency phone link between stations for accident/emergency communication."},
+],
+};
+
+// ── STATE ─────────────────────────────────────────────────────
+const S={
+  uid:null,user:null,tab:'home',
+  subjView:null,quizMode:'practice',
+  quiz:null,result:null,
+  testSubj:'financial',testQCount:10,
+  liveConfig:{hour:21,minute:0,duration:60,questions:20},
+  liveClock:null,aiOpen:false,aiMsgs:[],curQ:null,
+  _phone:'',_adminUnlocked:false,_confResult:null,_rcap:null,
+  auth:null,db:null,_fbReady:false,
+};
+
+const LS={
+  get:(k,d=null)=>{try{const v=localStorage.getItem(k);return v!=null?JSON.parse(v):d;}catch{return d;}},
+  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+};
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getQs(sid,n=10){return shuffle(PYQ[sid]||[]).slice(0,n);}
+function getMixed(n=20){return shuffle(Object.values(PYQ).flat()).slice(0,n);}
+function pad(n){return String(n).padStart(2,'0');}
+let _tt;
+function toast(msg,dur=3200){const e=document.getElementById('toast');e.textContent=msg;e.style.display='block';clearTimeout(_tt);_tt=setTimeout(()=>e.style.display='none',dur);}
+function showErr(id,msg){const e=document.getElementById(id);if(e){e.style.display='block';e.innerHTML=msg;}}
+function hideErr(id){const e=document.getElementById(id);if(e)e.style.display='none';}
+
+function hideLoader(){
+  const l=document.getElementById('loader');
+  l.classList.add('hide');
+  setTimeout(()=>l.classList.add('gone'),450);
+}
+
+function showCard(id){
+  ['card-phone','card-otp','card-setup'].forEach(c=>{
+    const el=document.getElementById(c);if(el)el.style.display=c===id?'block':'none';
+  });
+}
+
+function confetti(){
+  const cols=['#1d6fce','#f59e0b','#16a34a','#ef4444','#8b5cf6','#ec4899'];
+  for(let i=0;i<65;i++){
+    const el=document.createElement('div');el.className='conf';
+    el.style.cssText=`left:${Math.random()*100}vw;width:${Math.random()*9+5}px;height:${Math.random()*9+5}px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${Math.random()*2+1.4}s;animation-delay:${Math.random()*.6}s`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),3600);
+  }
+}
+
+// ── FIREBASE LOADER ───────────────────────────────────────────
+function loadFirebase(){
+  document.getElementById('fb-notice').style.display='block';
+  const scripts=[
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js',
+    'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js',
+  ];
+  let loaded=0;
+  scripts.forEach(src=>{
+    const s=document.createElement('script');
+    s.src=src;
+    s.onload=()=>{
+      loaded++;
+      document.getElementById('loader-txt').textContent=`Firebase ${loaded}/3 loading...`;
+      if(loaded===scripts.length)initFirebase();
+    };
+    s.onerror=()=>{
+      document.getElementById('fb-notice').style.display='none';
+      showErr('auth-err','⚠ Firebase load failed. Check internet. Guest mode works offline!');
+    };
+    document.head.appendChild(s);
+  });
+}
+
+function initFirebase(){
+  try{
+    firebase.initializeApp(FBCONFIG);
+    S.auth=firebase.auth();
+    S.db=firebase.database();
+    S._fbReady=true;
+    document.getElementById('fb-notice').style.display='none';
+    toast('✅ Firebase ready!');
+    S.auth.onAuthStateChanged(async(user)=>{
+      if(user && !user.isAnonymous){
+        S.uid=user.uid;
+        await loadProfile(user);
+      }
+    });
+  }catch(e){
+    console.error('Firebase init:',e);
+    document.getElementById('fb-notice').style.display='none';
+    showErr('auth-err','⚠ Firebase error: '+e.message+'. Use Guest mode below.');
+  }
+}
+
+// ── AUTH ──────────────────────────────────────────────────────
+function showAuth(){
+  document.getElementById('screen-auth').classList.add('active');
+  document.getElementById('screen-main').classList.remove('active');
+  document.getElementById('ai-fab').classList.remove('show');
+  showCard('card-phone');
+  hideErr('auth-err');
+}
+
+function checkFB(action){
+  if(!S._fbReady){
+    toast('⏳ Firebase abhi load ho raha hai... 3-5 sec wait karein');
+    showErr('auth-err','⏳ Firebase load ho raha hai. 3-5 second rukein phir try karein. Ya Guest mode use karein!');
+    return false;
+  }
+  return true;
+}
+
+async function initRcap(){
+  if(S._rcap){try{S._rcap.clear();}catch(e){}S._rcap=null;}
+  return new Promise((res,rej)=>{
+    try{
+      S._rcap=new firebase.auth.RecaptchaVerifier('recaptcha-container',{size:'invisible',callback:()=>{}});
+      S._rcap.render().then(()=>res(S._rcap)).catch(rej);
+    }catch(e){rej(e);}
+  });
+}
+
+async function sendOTP(){
+  snd.click();hideErr('auth-err');
+  if(!checkFB())return;
+  const phone=document.getElementById('ph-inp').value.trim();
+  if(phone.length!==10){showErr('auth-err','⚠ 10 अंकों का मोबाइल नंबर डालें।');return;}
+  const btn=document.getElementById('otp-btn');
+  btn.disabled=true;btn.innerHTML='<div class="spin"></div>';
+  S._phone=phone;
+  try{
+    const rcap=await initRcap();
+    S._confResult=await S.auth.signInWithPhoneNumber('+91'+phone,rcap);
+    showCard('card-otp');
+    document.getElementById('otp-sub').textContent='OTP भेजा गया +91 '+phone+' पर';
+    document.getElementById('ob0').focus();
+    toast('✅ OTP भेज दिया गया!');snd.send();
+  }catch(e){
+    let m='⚠ ';
+    if(e.code==='auth/invalid-phone-number')m+='Invalid phone number.';
+    else if(e.code==='auth/too-many-requests')m+='बहुत attempts। कुछ देर बाद try करें।';
+    else if(e.code==='auth/quota-exceeded')m+='SMS quota खत्म। Email login use करें।';
+    else m+=e.message||'OTP भेजने में समस्या। Email login try करें।';
+    showErr('auth-err',m);snd.wrong();
+  }finally{btn.disabled=false;btn.innerHTML='Send OTP';}
+}
+
+function otpIn(el,idx){
+  el.value=el.value.replace(/\D/g,'');
+  if(el.value&&idx<5)document.getElementById('ob'+(idx+1)).focus();
+  const otp=[0,1,2,3,4,5].map(i=>document.getElementById('ob'+i).value).join('');
+  if(otp.length===6)setTimeout(verifyOTP,150);
+}
+function otpKey(e,idx){if(e.key==='Backspace'&&!e.target.value&&idx>0)document.getElementById('ob'+(idx-1)).focus();}
+
+async function verifyOTP(){
+  hideErr('otp-err');
+  if(!S._confResult){showErr('otp-err','⚠ Session expire। वापस जाएं और OTP फिर भेजें।');return;}
+  const otp=[0,1,2,3,4,5].map(i=>document.getElementById('ob'+i).value).join('');
+  if(otp.length!==6)return;
+  const btn=document.getElementById('verify-btn');
+  btn.disabled=true;btn.innerHTML='<div class="spin"></div> Verifying...';
+  try{
+    const r=await S._confResult.confirm(otp);
+    S.uid=r.user.uid;await loadProfile(r.user);snd.success();
+  }catch(e){
+    let m='⚠ ';
+    if(e.code==='auth/code-expired')m+='OTP expire हो गया। वापस जाएं और दोबारा भेजें।';
+    else if(e.code==='auth/invalid-verification-code')m+='गलत OTP। SMS check करें।';
+    else m+=e.message||'Verification failed.';
+    showErr('otp-err',m);snd.wrong();
+    [0,1,2,3,4,5].forEach(i=>{document.getElementById('ob'+i).value='';});
+    document.getElementById('ob0').focus();
+  }finally{btn.disabled=false;btn.innerHTML='✓ Verify & Login';}
+}
+
+async function googleLogin(){
+  snd.click();hideErr('auth-err');
+  if(!checkFB())return;
+  try{
+    const provider=new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({prompt:'select_account'});
+    const r=await S.auth.signInWithPopup(provider);
+    S.uid=r.user.uid;
+    const existing=await S.db.ref('users/'+S.uid).once('value').catch(()=>null);
+    if(existing&&existing.exists()){S.user=existing.val();showMainApp();}
+    else{
+      document.getElementById('ps-name').value=r.user.displayName||'';
+      document.getElementById('ps-gmail').value=r.user.email||'';
+      showCard('card-setup');
+      toast('✅ Google login successful!');
+    }
+    snd.success();
+  }catch(e){
+    let m='⚠ ';
+    if(e.code==='auth/popup-blocked')m+='Popup block हुआ। Popups allow करें।';
+    else if(e.code==='auth/popup-closed-by-user')m+='Login cancel किया।';
+    else if(e.code==='auth/unauthorized-domain')m+='Domain authorized नहीं। Firebase Console में add करें।';
+    else m+=e.message||'Google login failed.';
+    showErr('auth-err',m);snd.wrong();
+  }
+}
+
+async function guestLogin(){
+  snd.click();
+  S.uid='guest_'+Date.now();
+  S.user={
+    name:'Guest User',gmail:'',empid:'',desig:'',
+    dept:'',zone:'',phone:'',email:'',
+    startDate:new Date().toISOString(),
+    subscribed:false,uid:S.uid,joinedAt:Date.now(),isGuest:true
+  };
+  LS.set('user_'+S.uid,S.user);
+  LS.set('last_guest_uid',S.uid);
+  showMainApp();
+  toast('👤 Guest mode — सभी features उपलब्ध!');
+  snd.success();
+}
+
+function backToPhone(){snd.nav();showCard('card-phone');hideErr('otp-err');S._confResult=null;}
+
+async function emailLogin(){
+  snd.click();hideErr('auth-err');
+  if(!checkFB())return;
+  const email=document.getElementById('em-inp').value.trim();
+  const pass=document.getElementById('pw-inp').value;
+  if(!email||!pass){showErr('auth-err','⚠ Email और password डालें।');return;}
+  try{
+    const r=await S.auth.signInWithEmailAndPassword(email,pass);
+    S.uid=r.user.uid;await loadProfile(r.user);snd.success();
+  }catch(e){
+    let m='⚠ ';
+    if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential')m+='Account नहीं मिला। पहले Register करें।';
+    else if(e.code==='auth/wrong-password')m+='गलत password।';
+    else if(e.code==='auth/invalid-email')m+='Invalid email।';
+    else if(e.code==='auth/too-many-requests')m+='बहुत attempts। बाद में try करें।';
+    else m+=e.message||'Login failed.';
+    showErr('auth-err',m);snd.wrong();
+  }
+}
+
+async function emailRegister(){
+  snd.click();hideErr('auth-err');
+  if(!checkFB())return;
+  const email=document.getElementById('em-inp').value.trim();
+  const pass=document.getElementById('pw-inp').value;
+  if(!email){showErr('auth-err','⚠ Email address डालें।');return;}
+  if(!pass||pass.length<6){showErr('auth-err','⚠ Password कम से कम 6 characters का होना चाहिए।');return;}
+  try{
+    const r=await S.auth.createUserWithEmailAndPassword(email,pass);
+    S.uid=r.user.uid;
+    showCard('card-setup');
+    toast('✅ Account बन गया! Profile भरें।');snd.success();
+  }catch(e){
+    let m='⚠ ';
+    if(e.code==='auth/email-already-in-use')m+='Email already registered। Login use करें।';
+    else if(e.code==='auth/weak-password')m+='Password कमज़ोर है।';
+    else m+=e.message||'Registration failed.';
+    showErr('auth-err',m);snd.wrong();
+  }
+}
+
+// ── PROFILE ──────────────────────────────────────────────────
+async function loadProfile(fbUser){
+  try{
+    const snap=await S.db.ref('users/'+fbUser.uid).once('value');
+    if(snap.exists()){S.user=snap.val();showMainApp();}
+    else showCard('card-setup');
+  }catch(e){
+    const cached=LS.get('user_'+fbUser.uid,null);
+    if(cached){S.user=cached;showMainApp();}
+    else showCard('card-setup');
+  }
+}
+
+async function saveProfile(){
+  snd.click();
+  const name=document.getElementById('ps-name').value.trim();
+  const dept=document.getElementById('ps-dept').value;
+  if(!name){showErr('ps-err','⚠ पूरा नाम जरूरी है।');return;}
+  if(!dept){showErr('ps-err','⚠ विभाग चुनें।');return;}
+  S.user={
+    name,gmail:document.getElementById('ps-gmail').value.trim(),
+    empid:document.getElementById('ps-empid').value.trim(),
+    desig:document.getElementById('ps-desig').value.trim(),
+    dept,zone:document.getElementById('ps-zone').value,
+    phone:S.auth?.currentUser?.phoneNumber||S._phone||'',
+    email:S.auth?.currentUser?.email||'',
+    startDate:new Date().toISOString(),subscribed:false,uid:S.uid,joinedAt:Date.now()
+  };
+  try{if(S._fbReady&&S.db)await S.db.ref('users/'+S.uid).set(S.user);}catch(e){}
+  LS.set('user_'+S.uid,S.user);
+  showMainApp();snd.success();toast('🎉 स्वागत है, '+name+'!');
+}
+
+async function updateProfile(){
+  snd.click();
+  const name=document.getElementById('ed-name').value.trim();
+  if(!name){toast('⚠ नाम जरूरी है');return;}
+  S.user={...S.user,name,
+    gmail:document.getElementById('ed-gmail').value.trim(),
+    empid:document.getElementById('ed-empid').value.trim(),
+    desig:document.getElementById('ed-desig').value.trim(),
+    dept:document.getElementById('ed-dept').value,
+    zone:document.getElementById('ed-zone').value
+  };
+  try{if(S._fbReady&&S.db)await S.db.ref('users/'+S.uid).set(S.user);}catch(e){}
+  LS.set('user_'+S.uid,S.user);
+  document.getElementById('nav-av').textContent=name[0].toUpperCase();
+  toast('✅ Profile update हो गई!');snd.success();renderProfile();
+}
+
+async function logout(){
+  if(!confirm('Logout करें?'))return;
+  snd.click();
+  try{if(S._fbReady&&S.auth)await S.auth.signOut();}catch(e){}
+  S.user=null;S.uid=null;S.quiz=null;S.result=null;
+  document.getElementById('screen-main').classList.remove('active');
+  showAuth();
+}
+
+// ── MAIN APP ─────────────────────────────────────────────────
+function showMainApp(){
+  document.getElementById('screen-auth').classList.remove('active');
+  document.getElementById('screen-main').classList.add('active');
+  document.getElementById('ai-fab').classList.add('show');
+  buildNav();checkTrial();renderTab();
+  if(S._fbReady&&S.db)loadLiveConfig();
+  const today=new Date().toDateString();
+  if(LS.get('last_day','')!==today){LS.set('last_day',today);LS.set('streak',LS.get('streak',0)+1);}
+}
+
+function checkTrial(){
+  if(!S.user)return;
+  const used=Math.floor((Date.now()-new Date(S.user.startDate))/86400000);
+  const left=Math.max(0,10-used);const exp=left===0&&!S.user.subscribed;
+  const banner=document.getElementById('nav-banner');
+  if(exp){banner.className='danger';banner.textContent='⚠ Trial Expired — Subscribe करें';banner.style.display='block';document.getElementById('sub-wall').classList.add('show');}
+  else if(left<=5){banner.className='warn';banner.textContent='⏳ '+left+' दिन बाकी (Trial)';banner.style.display='block';}
+  else banner.style.display='none';
+}
+
+function trialLeft(){return Math.max(0,10-Math.floor((Date.now()-new Date(S.user?.startDate||Date.now()))/86400000));}
+function isExpired(){return trialLeft()===0&&!S.user?.subscribed;}
+
+// ── NAV ───────────────────────────────────────────────────────
+const TABS=[
+  {id:'home',icon:'⊞'},{id:'subjects',icon:'📚'},{id:'test',icon:'✏️'},
+  {id:'live',icon:'●'},{id:'merit',icon:'🏆'},{id:'progress',icon:'📈'},{id:'profile',icon:'👤'}
+];
+function buildNav(){
+  document.getElementById('nav-tabs').innerHTML=TABS.map(tb=>`<button class="nt${S.tab===tb.id?' active':''}" onclick="switchTab('${tb.id}')">${tb.icon} ${t(tb.id)}</button>`).join('');
+  const av=document.getElementById('nav-av');
+  if(S.user){av.textContent=(S.user.name||'?')[0].toUpperCase();av.title=S.user.name;}
+}
+
+function switchTab(id){
+  snd.nav();
+  if(S.quiz?.ti){clearInterval(S.quiz.ti);S.quiz=null;}
+  if(S.liveClock){clearInterval(S.liveClock);S.liveClock=null;}
+  S.tab=id;S.subjView=null;S.result=null;S.quizMode='practice';
+  buildNav();renderTab();window.scrollTo(0,0);
+}
+
+function renderTab(){
+  if(isExpired()&&!['home','profile'].includes(S.tab)){document.getElementById('sub-wall').classList.add('show');return;}
+  const m=document.getElementById('main');
+  m.style.opacity='0';
+  setTimeout(()=>{m.style.transition='opacity .2s';m.style.opacity='1';
+    switch(S.tab){
+      case'home':renderHome();break;case'subjects':renderSubjects();break;
+      case'test':renderTest();break;case'live':renderLive();break;
+      case'merit':renderMerit();break;case'progress':renderProgress();break;
+      case'profile':renderProfile();break;
+    }
+  },50);
+}
+
+// ── HOME ──────────────────────────────────────────────────────
+function renderHome(){
+  const prog=LS.get('progress',{});
+  const tC=Object.values(prog).reduce((a,v)=>a+v.c,0),tA=Object.values(prog).reduce((a,v)=>a+v.t,0);
+  const acc=tA?Math.round(tC/tA*100):0,streak=LS.get('streak',1);
+  const cfg=S.liveConfig,now=new Date(),next=new Date();
+  next.setHours(cfg.hour,cfg.minute,0,0);if(next<=now)next.setDate(next.getDate()+1);
+  const diff=next-now,total=Object.values(PYQ).flat().length;
+  const icons={financial:'₹',establishment:'📋',stores:'📦',operating:'🚆',mechanical:'⚙️',gk:'🌐',accounts:'📊',technical:'🔧',safety:'🛡️'};
+  const lbl={financial:'Finance',establishment:'Estab.',stores:'Stores',operating:'G&SR',mechanical:'Mech.',gk:'GK',accounts:'Accts',technical:'Tech.',safety:'Safety'};
+  document.getElementById('main').innerHTML=`
+    <div style="background:linear-gradient(135deg,#1d6fce,#1e40af);border-radius:15px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;right:-20px;top:-20px;width:130px;height:130px;background:rgba(255,255,255,.07);border-radius:50%"></div>
+      <div style="font-size:11px;color:rgba(255,255,255,.65);font-weight:600;margin-bottom:2px">${t('welcome')}</div>
+      <div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:11px">${S.user?.name||'Railway Aspirant'}</div>
+      <div style="display:flex;gap:14px">
+        <div><div style="font-size:19px;font-weight:800;color:#fff">${tA}</div><div style="font-size:10px;color:rgba(255,255,255,.55);font-weight:600">${t('attempted')}</div></div>
+        <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+        <div><div style="font-size:19px;font-weight:800;color:#fff">${acc}%</div><div style="font-size:10px;color:rgba(255,255,255,.55);font-weight:600">${t('accuracy')}</div></div>
+        <div style="width:1px;background:rgba(255,255,255,.2)"></div>
+        <div><div style="font-size:19px;font-weight:800;color:#fff">${streak}🔥</div><div style="font-size:10px;color:rgba(255,255,255,.55);font-weight:600">${t('streak')}</div></div>
+      </div>
+    </div>
+    <div class="g2" style="margin-bottom:12px">
+      <div class="card tap" onclick="switchTab('subjects')"><div style="font-size:24px;margin-bottom:5px">📚</div><div style="font-weight:700;font-size:13.5px">${t('subjects')}</div><div style="font-size:11px;color:var(--textLt);margin-top:2px">${t('chapterPYQ')}</div></div>
+      <div class="card tap" onclick="switchTab('test')"><div style="font-size:24px;margin-bottom:5px">✏️</div><div style="font-weight:700;font-size:13.5px">Mock Test</div><div style="font-size:11px;color:var(--textLt);margin-top:2px">${t('timedExam')}</div></div>
+    </div>
+    <div class="card amber" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px"><span class="badge live" style="animation:pulse 1s infinite">● LIVE</span><span style="font-size:10px;color:var(--textLt);font-weight:600">DAILY</span></div>
+          <div style="font-weight:800;font-size:13.5px">${t('nextLiveIn')} ${pad(Math.floor(diff/3600000))}h ${pad(Math.floor((diff%3600000)/60000))}m</div>
+          <div style="font-size:11px;color:var(--textMid);margin-top:2px">${cfg.questions} Qs · ${t('mixedSubjects')}</div>
+        </div>
+        <button class="btn amber-btn sm" onclick="switchTab('live')">${t('joinLive')}</button>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="lbl">${t('quickPractice')}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+        ${Object.keys(PYQ).map(sid=>{const p=prog[sid];const ac=p?Math.round(p.c/p.t*100):null;
+          return`<div onclick="quickStart('${sid}')" style="background:var(--bg2);border-radius:9px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--primaryLt)'" onmouseout="this.style.background='var(--bg2)'">
+            <div style="font-size:17px">${icons[sid]||'📖'}</div>
+            <div style="font-size:10px;font-weight:700;color:var(--textMid);margin-top:2px">${lbl[sid]||sid}</div>
+            ${ac!==null?`<div style="font-size:11px;font-weight:800;color:${ac>=70?'var(--ok)':'var(--err)'};margin-top:2px">${ac}%</div>`:'<div style="font-size:9px;color:var(--textLt)">Start</div>'}
+          </div>`;}).join('')}
+      </div>
+    </div>
+    <div class="card blue"><div style="font-size:11px;color:var(--primary);font-weight:700">📚 PYQ BANK</div>
+      <div style="font-size:13px;font-weight:600;margin-top:3px">${total}+ Questions · ${Object.keys(PYQ).length} Subjects · Explained Answers</div>
+    </div>`;
+}
+
+function quickStart(sid){snd.click();S.tab='subjects';S.subjView=sid;buildNav();startQuiz(getQs(sid,10),sid,'practice');}
+
+// ── SUBJECTS ─────────────────────────────────────────────────
+const SMETA={
+  financial:{name:'Financial Rules',icon:'₹',color:'#1d6fce',chapters:[{name:'General Financial Rules',desc:'GFR 2017, Re-appropriation, Procurement'},{name:'Budget & Appropriation',desc:'Demands for Grants, Vote on Account'},{name:'Advances & Loans',desc:'HBA, Vehicle, Festival, Personal Advances'},{name:'Audit & Accounts',desc:'CAG, Internal Audit, PAO functions'},{name:'Railway Funds',desc:'DRF, Capital, Pension Fund'}]},
+  establishment:{name:'Establishment Rules',icon:'📋',color:'#6366f1',chapters:[{name:'Service Conditions',desc:'Probation, Seniority, Confirmation'},{name:'Leave Rules (CCS)',desc:'EL, CL, HPL, CCL, Maternity, Paternity'},{name:'Pay & Allowances',desc:'7th CPC, HRA, TA, DA, NPS'},{name:'Promotions & DPC',desc:'MACP, DPC, Seniority, APARs'},{name:'Conduct Rules',desc:'CCS Conduct Rules, Disciplinary Proceedings'}]},
+  stores:{name:'Stores & Inventory',icon:'📦',color:'#f59e0b',chapters:[{name:'Purchase & Procurement',desc:'Tender, LTE, OTE, DGS&D, Rate Contract'},{name:'Inventory Management',desc:'ABC, EOQ, MRP, Safety Stock, Bin Card'},{name:'Stock Verification',desc:'Annual, Special, Surprise checks'},{name:'Scrap & Disposal',desc:'Condemnation, Auction, Write-off, APSA'}]},
+  operating:{name:'Operating (G&SR)',icon:'🚆',color:'#ef4444',chapters:[{name:'Signalling & Block Working',desc:'Absolute Block, SPAD, Line Clear, T/A912'},{name:'Speed & Train Control',desc:'Speed restrictions, Caution Orders, WTT'},{name:'Train Protection',desc:'Fog signals, Hand signals, Detonators'},{name:'Accident & Emergency',desc:'ART, ARMV, Protection duties'},{name:'Station Working Rules',desc:'SWR, Station duties, Point working'}]},
+  mechanical:{name:'Mechanical Engineering',icon:'⚙️',color:'#16a34a',chapters:[{name:'Rolling Stock Types',desc:'Locos (WAP, WAG, WDM), Coaches, Wagons'},{name:'Maintenance Schedules',desc:'POH, ROH, Brake testing, Wheel inspection'},{name:'Electric Traction',desc:'OHE, Pantograph, EMU, MEMU, WAP/WAG'},{name:'Safety & Couplers',desc:'LHB, CBC, Anti-climbing, Derailment'}]},
+  gk:{name:'General Knowledge',icon:'🌐',color:'#8b5cf6',chapters:[{name:'IR History & Milestones',desc:'1853 to present, firsts, world records'},{name:'Zones, Divisions & HQs',desc:'18 zones, their HQs, major divisions'},{name:'Major Projects',desc:'Bullet train, KAVACH, Vande Bharat, RVNL'},{name:'Acts & Policies',desc:'Railways Act, National Rail Plan 2030'}]},
+  accounts:{name:'Railway Accounts',icon:'📊',color:'#0891b2',chapters:[{name:'Traffic Accounts (TAO)',desc:'Traffic receipts, classification, TTA'},{name:'Budget & Demands',desc:'Demands for Grant, Pink Book, Outcome Budget'},{name:'Suspense & Misc Heads',desc:'Suspense heads, DRF, Capital-at-Charge'},{name:'Audit & CAG',desc:'Appropriation Accounts, CAG audit, ACS'}]},
+  technical:{name:'Technical (Engineering)',icon:'🔧',color:'#d97706',chapters:[{name:'Track Engineering',desc:'Rails, Sleepers, Ballast, LWR, SEJ, Cant'},{name:'Bridges & Tunnels',desc:'Types, inspection, Chenab bridge'},{name:'Signal Engineering',desc:'Colour light, Route relay, ETCS, TCAS'},{name:'Electrification',desc:'OHE, 25kV 50Hz AC, USFD testing'}]},
+  safety:{name:'Safety Rules',icon:'🛡️',color:'#dc2626',chapters:[{name:'Safety Rules & SWR',desc:'G&SR safety provisions, Station Working Rules'},{name:'Accident Classification',desc:'Types, reporting procedures, CRS'},{name:'Relief Operations',desc:'ART, ARMV, NDRF, Medical relief'},{name:'Safe Working Practices',desc:'PTW, Track patrolman, Fog working'}]},
+};
+
+function renderSubjects(){
+  if(S.quiz){renderQuiz();return;}if(S.result){renderResult();return;}
+  const m=document.getElementById('main'),prog=LS.get('progress',{});
+  if(S.subjView){
+    const meta=SMETA[S.subjView],p=prog[S.subjView],acc=p?Math.round(p.c/p.t*100):null;
+    m.innerHTML=`
+      <button onclick="S.subjView=null;renderSubjects()" style="background:none;border:none;color:var(--textMid);cursor:pointer;font-size:13px;font-weight:600;margin-bottom:12px">${t('backSubj')}</button>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px">
+        <div style="width:50px;height:50px;border-radius:12px;background:${meta.color}18;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">${meta.icon}</div>
+        <div><div class="dsp" style="font-size:22px;letter-spacing:1px;color:${meta.color}">${meta.name}</div>
+          <div style="font-size:11px;color:var(--textLt)">${PYQ[S.subjView]?.length||0} PYQs · ${meta.chapters.length} ${t('chapters')}${acc!==null?' · Accuracy: '+acc+'%':''}</div>
+        </div>
+      </div>
+      <div class="tpills">
+        <button class="tpill${S.quizMode==='practice'?' active':''}" onclick="S.quizMode='practice';document.querySelectorAll('.tpill').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${t('practice')}</button>
+        <button class="tpill${S.quizMode==='test'?' active':''}" onclick="S.quizMode='test';document.querySelectorAll('.tpill').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${t('testMode')}</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:13px">
+        ${meta.chapters.map((ch,i)=>`<div class="ch-item" onclick="snd.click();startQuiz(getQs('${S.subjView}',15),'${S.subjView}',S.quizMode,'${ch.name}')">
+          <div class="ch-num">${i+1}</div>
+          <div style="flex:1"><div style="font-weight:700;font-size:13px">${ch.name}</div><div style="font-size:11px;color:var(--textLt);margin-top:1px">${ch.desc}</div></div>
+          <div style="color:var(--textLt);font-size:18px">›</div>
+        </div>`).join('')}
+      </div>
+      <div class="card" style="border-style:dashed;cursor:pointer;margin-bottom:8px" onclick="snd.click();startQuiz(getQs('${S.subjView}',20),'${S.subjView}',S.quizMode)">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-weight:700;font-size:13px">${t('allRandom')} ${meta.name}</div><div style="font-size:11px;color:var(--textLt);margin-top:2px">सभी chapters से random</div></div>
+          <span style="color:var(--textLt);font-size:18px">›</span>
+        </div>
+      </div>
+      <div class="card tap" style="border-style:dashed" onclick="snd.click();startQuiz(getMixed(20),null,S.quizMode)">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-weight:700;font-size:13px">${t('allMixed')}</div><div style="font-size:11px;color:var(--textLt);margin-top:2px">सभी विषयों से 20 random</div></div>
+          <span style="color:var(--textLt);font-size:18px">›</span>
+        </div>
+      </div>`;
+    return;
+  }
+  m.innerHTML=`
+    <div class="dsp" style="font-size:27px;letter-spacing:2px;margin-bottom:3px">${t('subjects')}</div>
+    <div style="font-size:12px;color:var(--textLt);margin-bottom:15px">अध्यायवार PYQ practice के लिए विषय चुनें</div>
+    <div style="display:flex;flex-direction:column;gap:9
